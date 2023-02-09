@@ -2,12 +2,13 @@
 # vi: set ft=ruby :
 
 API_VERSION = "2"
-WORKERS = 2
+VM_PROVIDER = "libvirt"
+WORKERS = 3
 
 Vagrant.configure(API_VERSION) do |config|
 
   config.vm.provision "shell", inline: "curl -fsSL https://get.docker.com | sh"
-  config.vm.provider :libvirt do |v|
+  config.vm.provider :VM_PROVIDER do |v|
     v.memory = 256
     v.cpus = 1
   end
@@ -19,7 +20,7 @@ Vagrant.configure(API_VERSION) do |config|
       node.vm.network :private_network, ip: "192.168.10.#{10+i}"
       node.vm.synced_folder "./shared", "/vagrant", create: true
       if node.vm.hostname != "portainer-1"
-        node.vm.provision "shell", inline: "cat /vagrant/join | grep '^ ' | sh", privileged: true
+        node.vm.provision "shell", inline: "sleep 60 && cat /vagrant/join | grep '^ ' | sh", privileged: true
       end
       if node.vm.hostname == "portainer-1"
         node.vm.provision "shell", inline: "curl -L https://downloads.portainer.io/ce2-17/portainer-agent-stack.yml -o ~/portainer-agent-stack.yml"
