@@ -8,7 +8,7 @@ WORKERS = 3
 Vagrant.configure(API_VERSION) do |config|
 
   config.vm.provision "shell", inline: "curl -fsSL https://get.docker.com | sh"
-  config.vm.provider :VM_PROVIDER do |v|
+  config.vm.provider VM_PROVIDER do |v|
     v.memory = 256
     v.cpus = 1
   end
