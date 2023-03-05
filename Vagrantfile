@@ -4,13 +4,15 @@
 API_VERSION = "2"
 VM_PROVIDER = "libvirt"
 WORKERS = 3
+VM_MEMORY = 1024
+VM_CPUS = 2
 
 Vagrant.configure(API_VERSION) do |config|
 
   config.vm.provision "shell", inline: "curl -fsSL https://get.docker.com | sh"
   config.vm.provider VM_PROVIDER do |v|
-    v.memory = 256
-    v.cpus = 1
+    v.memory = VM_MEMORY
+    v.cpus = VM_CPUS
   end
 
   (1..WORKERS).each do |i|
